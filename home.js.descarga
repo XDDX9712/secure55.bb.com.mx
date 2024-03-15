@@ -1,0 +1,70 @@
+$(document).ready(function(){
+
+  // Backgrounds
+  $('.img-bg').each(function(){ 
+    if( $(this).find('img.hidden').length > 0 ){
+      var src = $(this).find('img.hidden').attr('src');
+      $(this).css({ 'background-image': 'url(' + src + ')', opacity: '0' }).animate({ opacity: 1 }, 900);
+    }
+    if( $(this).attr('data-bgc') ) $(this).css('background-color', '#' + $(this).attr('data-bgc')); 
+  });
+
+  $('body').on('click', '.overlay .icon-close', function(){ 
+    $('.overlay').removeClass('open');
+    $('body').removeClass('open-overlay'); 
+    setTimeout(function(){ $('.overlay').remove(); },1000);
+  });
+
+});
+
+// Overlays
+  $('.btn, .btn-overlay').click(function(){ 
+   $('#Username').prop("disabled", false);
+   if( $(this).data('overlay') ){
+
+    /*LFMM*/
+    option = $(this).data('option');
+    $.ajax({
+      url: $(this).data('overlay') + '?t=' + Math.random(),
+      success: function(data){
+        $('body').removeClass('open-menu').addClass('open-overlay').append(data);
+        $('#contacto').html("<span class='lookfeelLoader big'></span>");
+        /*LFMM*/
+        switch(option){
+          case 'asb':
+             $('#contacto').load("/middleware/lookfeel/view/ing_asb.html");
+          break;
+	  case 'asb2':
+             $('#contacto').load("/middleware/lookfeel/view/ing_asb2.html");
+          break;
+          case 'horarios':
+             $('#contacto').load("/middleware/lookfeel/view/ing_horario.html");
+          break;
+          case 'tarifas':
+             $('#contacto').load("/middleware/lookfeel/view/ing_tarifas.html");
+          break;
+          case 'clave':
+            javascript:iniProcesarMenu('clave', '');
+          break;
+          case 'synchronizeasb':
+            javascript:iniProcesarMenu('synchronizeasb', '');
+          break;
+          case 'pinasb':
+            javascript:iniProcesarMenu('pinasb', '');
+          break;
+          case 'testasb':
+            javascript:iniProcesarMenu('testasb', '')
+          break;
+          case 'pinsofttoken':
+            javascript:iniProcesarMenu('pinsofttoken', '')
+          break;
+        
+        }
+        setTimeout(function(){ $('.overlay').addClass('open'); },10);
+
+      }
+    });
+    return false;
+  }}); 
+
+
